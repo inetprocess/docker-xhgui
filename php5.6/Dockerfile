@@ -2,13 +2,15 @@ FROM        edyan/php:5.6
 MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
+ENV         NGINX_PORT 80
+ENV         MONGO_PORT 27017
 
 # Installation
 RUN         apt-get update && \
             # Upgrade the system
             apt-get upgrade -y && \
             # Install packages
-            apt-get install -y --no-install-recommends ca-certificates git mongodb-server nginx supervisor && \
+            apt-get install -y --no-install-recommends ca-certificates git mongodb-server nginx gettext-base supervisor && \
             # Clone xhgui and install 0.7.1, then remove useless files
             git clone https://github.com/perftools/xhgui /usr/local/src/xhgui && \
             cd /usr/local/src/xhgui && \
@@ -70,8 +72,6 @@ COPY        conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Global directives
 VOLUME      ["/usr/local/src/xhgui"]
 
-EXPOSE      80 27017
-
 ENV         FPM_UID 33
 ENV         FPM_GID 33
 
@@ -79,5 +79,7 @@ COPY        tests/test.php /root/test.php
 RUN         chmod +x /root/test.php
 COPY        post-run.sh /root/post-run.sh
 RUN         chmod +x /root/post-run.sh
+COPY        entrypoint.sh /root/entrypoint.sh
+RUN         chmod +x /root/post-run.sh
 
-CMD         ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+ENTRYPOINT ["/root/entrypoint.sh"]
