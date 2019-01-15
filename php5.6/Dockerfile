@@ -4,6 +4,7 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 ARG         DEBIAN_FRONTEND=noninteractive
 ENV         NGINX_PORT 80
 ENV         MONGO_PORT 27017
+ENV         PHPFPM_PORT 9000
 
 # Installation
 RUN         apt-get update && \
@@ -63,6 +64,8 @@ COPY        conf/nginx.default.conf /etc/nginx/sites-available/default
 RUN         mkdir /var/log/nginx && \
             chown -R www-data:www-data /var/log/nginx
 
+# Prepare phpfpm
+COPY        conf/www.conf /etc/php/5.6/fpm/pool.d/www.conf 
 
 # Supervisord
 RUN         mkdir -p /var/log/supervisor
