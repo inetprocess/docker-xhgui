@@ -2,9 +2,6 @@ FROM        edyan/php:5.6
 MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
-ENV         NGINX_PORT 80
-ENV         MONGO_PORT 27017
-ENV         PHPFPM_PORT 9000
 
 # Installation
 RUN         apt-get update && \
@@ -65,7 +62,7 @@ RUN         mkdir /var/log/nginx && \
             chown -R www-data:www-data /var/log/nginx
 
 # Prepare phpfpm
-COPY        conf/www.conf /etc/php/5.6/fpm/pool.d/www.conf 
+COPY        conf/www.conf /etc/php5/fpm/pool.d/www.conf
 
 # Supervisord
 RUN         mkdir -p /var/log/supervisor
@@ -77,6 +74,9 @@ VOLUME      ["/usr/local/src/xhgui"]
 
 ENV         FPM_UID 33
 ENV         FPM_GID 33
+ENV         NGINX_PORT 80
+ENV         MONGO_PORT 27017
+ENV         PHPFPM_PORT 9000
 
 COPY        tests/test.php /root/test.php
 RUN         chmod +x /root/test.php

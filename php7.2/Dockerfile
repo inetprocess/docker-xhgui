@@ -2,9 +2,6 @@ FROM        edyan/php:7.2
 MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
-ENV         NGINX_PORT 80
-ENV         MONGO_PORT 27017
-ENV         PHPFPM_PORT 9000
 
 # Installation
 RUN         apt update && \
@@ -76,6 +73,9 @@ VOLUME      ["/usr/local/src/xhgui"]
 
 ENV         FPM_UID 33
 ENV         FPM_GID 33
+ENV         NGINX_PORT 80
+ENV         MONGO_PORT 27017
+ENV         PHPFPM_PORT 9000
 
 COPY        tests/test.php /root/test.php
 RUN         chmod +x /root/test.php
