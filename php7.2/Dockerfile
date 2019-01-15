@@ -77,6 +77,6 @@ RUN         chmod +x /root/test.php
 COPY        post-run.sh /root/post-run.sh
 RUN         chmod +x /root/post-run.sh
 COPY        entrypoint.sh /root/entrypoint.sh
-RUN         chmod +x /root/post-run.sh
+RUN         chmod +x /root/entrypoint.sh
 
 ENTRYPOINT ["/root/entrypoint.sh"]
